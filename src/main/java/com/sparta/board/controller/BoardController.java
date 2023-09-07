@@ -42,9 +42,9 @@ public class BoardController {
     public ResponseEntity<String> updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto requestDto , @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.updateBoard(id, requestDto, userDetails.getUser());
     }
-
     @DeleteMapping("/boards/{id}")
     public ResponseEntity<String> deleteBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.deleteBoard(id,userDetails.getUser());//userDetails.getUser() : 로그인한 사용자 정보
     }
+
 }
