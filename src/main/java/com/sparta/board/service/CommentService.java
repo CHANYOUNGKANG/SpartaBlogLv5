@@ -5,16 +5,16 @@ package com.sparta.board.service;
 import com.sparta.board.dto.BoardRequestDto;
 import com.sparta.board.dto.CommentRequestDto;
 import com.sparta.board.dto.CommentResponseDto;
-import com.sparta.board.entity.Board;
-import com.sparta.board.entity.Comment;
-import com.sparta.board.entity.User;
-import com.sparta.board.entity.UserRoleEnum;
+import com.sparta.board.entity.*;
 import com.sparta.board.repository.BoardRepository;
 import com.sparta.board.repository.CommentRepository;
+import com.sparta.board.repository.LikesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor//final이 붙은 필드를 인자값으로 하는 생성자를 만들어줌
 @Service//서비스라고 스프링에 알려줌
@@ -22,6 +22,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
+    private final LikesRepository likesRepository;
 
 
 
@@ -50,7 +51,7 @@ public class CommentService {
             comment.update(requestDto, user);
             return ResponseEntity.ok().body("수정 완료");
         } else {
-            return ResponseEntity.badRequest().body("유저가 일치하지 않습니다.");
+            throw new IllegalArgumentException("유저가 일치하지 않습니다.");
         }
     }
 
@@ -69,11 +70,24 @@ public class CommentService {
             commentRepository.deleteById(id);
             return ResponseEntity.ok().body("삭제 완료");
         } else {
-            return ResponseEntity.badRequest().body("유저가 일치하지 않습니다.");
+            throw new IllegalArgumentException("유저가 일치하지 않습니다.");
         }
 
     }
-
+    public ResponseEntity<String> likesComment(Long id, User user) {
+        Comment comment = commentRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("선택한 글은 존재하지 않습니다.")
+        );
+        Optional<Likes> like = likesRepository.findByCommentIdAndUserId(id, user.getId());//likeRepository.findByBoardIdAndUserId(id, user.getId());를 실행시킴 //likeRepository.findByBoardIdAndUserId(id, user.getId());는 LikeRepository에 있는 findByBoardIdAndUserId를 실행시킴 //likeRepository.findByBoardIdAndUserId(id, user.getId());는 boardId와 userId를 찾아줌
+        if(like.isEmpty()){
+            likesRepository.save(new Likes(comment, user));//likeRepository.save(new Like(board, user));를 실행시킴 //likeRepository.save(new Like(board, user));는 LikeRepository에 있는 save를 실행시킴 //likeRepository.save(new Like(board, user));는 like를 저장시킴
+            return ResponseEntity.ok().body("좋아요");
+        }
+        else{
+            likesRepository.delete(like.get());//likeRepository.delete(like.get());를 실행시킴 //likeRepository.delete(like.get());는 LikeRepository에 있는 delete를 실행시킴 //likeRepository.delete(like.get());는 like를 삭제시킴
+            return ResponseEntity.ok().body("좋아요 취소");
+        }
+    }
 
 
 

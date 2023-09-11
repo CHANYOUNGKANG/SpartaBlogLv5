@@ -15,6 +15,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
+
     public CommentController(CommentService commentService) {
         this.commentService = commentService;
     }
@@ -32,6 +33,11 @@ public class CommentController {
     @DeleteMapping("/comments/{id}")
     public ResponseEntity<String> deleteComment(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.deleteComment(id,userDetails.getUser());//userDetails.getUser() : 로그인한 사용자 정보
+    }
+
+    @PutMapping("/comments/{id}/like")
+    public ResponseEntity<String> likesComment(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return commentService.likesComment(id, userDetails.getUser());
     }
 
 

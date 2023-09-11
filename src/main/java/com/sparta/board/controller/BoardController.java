@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+
 @RequestMapping("/api")
 
 public class BoardController {
@@ -26,6 +27,14 @@ public class BoardController {
     public BoardResponseDto createBoard(@RequestBody BoardRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.createBoard(requestDto, userDetails.getUser());//userDetails.getUser() : 로그인한 사용자 정보
     }
+    @GetMapping("/boards/{id}")
+    public BoardResponseDto getBoard(@PathVariable Long id) {
+        return boardService.getBoard(id);
+    }
+
+
+
+
 
     @GetMapping("/boards")
     public List<BoardResponseDto> getBoards() {
@@ -42,9 +51,17 @@ public class BoardController {
     public ResponseEntity<String> updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto requestDto , @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.updateBoard(id, requestDto, userDetails.getUser());
     }
-    @DeleteMapping("/boards/{id}")
+    @DeleteMapping("/boards/{id}")//삭제
     public ResponseEntity<String> deleteBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.deleteBoard(id,userDetails.getUser());//userDetails.getUser() : 로그인한 사용자 정보
     }
+
+    @PutMapping("/boards/{id}/like")
+    public ResponseEntity<String> likeBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return boardService.likeBoard(id, userDetails.getUser());
+    }
+
+
+
 
 }

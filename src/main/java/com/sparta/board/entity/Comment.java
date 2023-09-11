@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity // JPA가 관리할 수 있는 Entity 클래스 지정
 @Getter
 @Setter
@@ -17,6 +20,8 @@ public class Comment extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
     @Column(name = "comments", nullable = false, length = 500)
     private String comments;
 
@@ -27,6 +32,9 @@ public class Comment extends Timestamped{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
+    private List<Likes> likeList= new ArrayList<>();//comment에 있는 likeList를 가져옴 //mappedBy는 연관관계의 주인이 아니다(난 FK가 아니에요) 라는 뜻 //comment는 like를 가지고 있지만 like는 comment를 가지고 있지 않다는 뜻 //comment는 like를 참조할 수 있지만 like는 comment를 참조할 수 없다는 뜻
 
     public Comment(CommentRequestDto requestDto, Board board, User user) {
         this.comments = requestDto.getComment();

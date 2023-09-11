@@ -33,6 +33,11 @@ public class Board extends Timestamped {
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<Comment> commentsList = new ArrayList<>();//board에 있는 commentList를 가져옴 //mappedBy는 연관관계의 주인이 아니다(난 FK가 아니에요) 라는 뜻 //board는 comment를 가지고 있지만 comment는 board를 가지고 있지 않다는 뜻 //board는 comment를 참조할 수 있지만 comment는 board를 참조할 수 없다는 뜻
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    private List<Likes> likeList = new ArrayList<>();//board에 있는 likeList를 가져옴 //mappedBy는 연관관계의 주인이 아니다(난 FK가 아니에요) 라는 뜻 //board는 like를 가지고 있지만 like는 board를 가지고 있지 않다는 뜻 //board는 like를 참조할 수 있지만 like는 board를 참조할 수 없다는 뜻
+
+
+
     public Board(BoardRequestDto requestDto, User user) {
         this.contents = requestDto.getContents();
         this.title = requestDto.getTitle();
@@ -44,5 +49,7 @@ public class Board extends Timestamped {
         this.title = requestDto.getTitle();
         this.user = user;
     }
+
+
 
 }
