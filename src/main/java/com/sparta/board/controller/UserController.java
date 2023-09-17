@@ -1,19 +1,14 @@
 package com.sparta.board.controller;
 
-import com.sparta.board.dto.LoginRequestDto;
+
 import com.sparta.board.dto.SignupRequestDto;
-import com.sparta.board.dto.StatusDto;
 import com.sparta.board.service.UserService;
-import jakarta.servlet.http.HttpServletResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +25,7 @@ public class UserController {
     private final UserService userService;
 
     // ////////////////////////////////
+    @Operation(hidden = true)
     @PostMapping("/auth/signup")// 회원가입
     public ResponseEntity<String> signup(@RequestBody @Valid SignupRequestDto requestDto, BindingResult bindingResult) {// @RequestBody : 요청받은 데이터를 객체로 변환 // @Valid : 유효성 검사 //   SignupRequestDto : 회원가입 요청을 받는 객체
         // Validation 예외처리

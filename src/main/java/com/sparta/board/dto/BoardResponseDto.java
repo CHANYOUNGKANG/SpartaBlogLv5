@@ -17,7 +17,7 @@ public class  BoardResponseDto  {
     private LocalDateTime modifiedAt;
     private String title;
     private Integer likeCount;
-    private List<CommentResponseDto> commentList = new ArrayList<>();//commentResponseDto를 담을 수 있는 리스트를 만듬
+    private List<CommentResponseDto> commentList = new ArrayList<>();//commentResponseDto를 담을 수 있는 리스트를 만듬//
 
     public BoardResponseDto(Board board){
         this.id = board.getId();

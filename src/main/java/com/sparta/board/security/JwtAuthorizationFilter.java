@@ -1,6 +1,6 @@
 package com.sparta.board.security;
 
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.board.jwt.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -15,7 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-
+import com.sparta.board.exception.RestApiException;
 import java.io.IOException;
 
 @Slf4j(topic = "JWT 검증 및 인가")
@@ -29,10 +29,43 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         this.userDetailsService = userDetailsService;
     }
 
+
+///////////////
+    public boolean isEmpty(String str) {//문자열이 비어있는지 확인하는 메소드
+        if(str == null) {
+            return true;
+        }
+        return false;
+    }
+
+///////////////
+
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
 
+        ////////////
         String tokenValue = jwtUtil.getJwtFromHeader(req);
+        ////////
+        if ("/api/auth/login".equals(req.getRequestURI()) ||
+                "/api/auth/signup".equals(req.getRequestURI()) ||
+                req.getRequestURI().startsWith("/v3/") ||
+                req.getRequestURI().startsWith("/swagger-ui")) {
+            // 토큰이 비어 있을 때 예외 처리를 하지 않도록 조건문 추가
+            filterChain.doFilter(req, res);
+            return;
+        }
+///////////////////////////////
+        if(isEmpty(tokenValue)) {//토큰이 없을 때 --> swagger 사용 시 주석 처리 일단.. 원인은 파악이 안됨
+            res.setContentType("application/json");
+            res.setCharacterEncoding("UTF-8");
+            res.setStatus(403);
+            RestApiException restApiException = new RestApiException("토큰이 유효하지 않습니다.", 403);
+            res.getWriter().write(new ObjectMapper().writeValueAsString(restApiException));
+            return;
+        }
+        ////////////
+
+
 
         if (StringUtils.hasText(tokenValue)) {
 

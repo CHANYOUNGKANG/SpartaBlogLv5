@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Entity // JPA가 관리할 수 있는 Entity 클래스 지정
 @Getter
-@Setter
+@Setter//setter는 사용하지 않는 것이 좋음
 @Table(name = "likes") // 매핑할 테이블의 이름을 지정
 @NoArgsConstructor
 public class Likes {

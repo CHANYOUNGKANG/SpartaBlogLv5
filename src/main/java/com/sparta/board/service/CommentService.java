@@ -2,7 +2,7 @@ package com.sparta.board.service;
 
 
 
-import com.sparta.board.dto.BoardRequestDto;
+
 import com.sparta.board.dto.CommentRequestDto;
 import com.sparta.board.dto.CommentResponseDto;
 import com.sparta.board.entity.*;

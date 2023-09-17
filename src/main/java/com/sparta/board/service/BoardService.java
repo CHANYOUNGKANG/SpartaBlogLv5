@@ -42,7 +42,7 @@ public class BoardService {
         return boardRepository.findAllByOrderByModifiedAtDesc().stream().map(BoardResponseDto::new).toList();
     }
 
-    public List<BoardResponseDto> getBoardsByKeyword(String keyword) {
+    public List<BoardResponseDto> getBoardsByKeyword(String keyword) {//keyword : 검색어
         return boardRepository.findAllByContentsContainsOrderByModifiedAtDesc(keyword).stream().map(BoardResponseDto::new).toList();
     }
 

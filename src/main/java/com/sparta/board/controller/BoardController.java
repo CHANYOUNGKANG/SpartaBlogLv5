@@ -23,28 +23,25 @@ public class BoardController {
         this.boardService = boardService;
     }
 
-    @PostMapping("/boards")
+    @PostMapping("/boards")//생성
     public BoardResponseDto createBoard(@RequestBody BoardRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.createBoard(requestDto, userDetails.getUser());//userDetails.getUser() : 로그인한 사용자 정보
     }
-    @GetMapping("/boards/{id}")
+    @GetMapping("/boards/{id}")//상세보기
     public BoardResponseDto getBoard(@PathVariable Long id) {
         return boardService.getBoard(id);
     }
 
 
+    @GetMapping("/boards")//전체보기
+    public List<BoardResponseDto> getBoards() {//전체보기
 
-
-
-    @GetMapping("/boards")
-    public List<BoardResponseDto> getBoards() {
-
-        return boardService.getBoards();
+        return boardService.getBoards();//전체보기
     }
 
-    @GetMapping("/boards/contents")
-    public List<BoardResponseDto> getBoardsByKeyword(String keyword){
-        return boardService.getBoardsByKeyword(keyword);
+    @GetMapping("/boards/contents")//전체보기
+    public List<BoardResponseDto> getBoardsByKeyword(String keyword){//keyword : 검색어
+        return boardService.getBoardsByKeyword(keyword);//검색어를 넘겨줌
     }
 
     @PutMapping("/boards/{id}")

@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
+@Setter//setter는 사용하지 않는 것이 좋음
 @NoArgsConstructor
 @Table(name = "users")
 public class User {

@@ -38,7 +38,7 @@ public class JwtUtil {
     }
 
     // 토큰 생성
-    public String createToken(String username, UserRoleEnum role) {
+    public String createToken(String username, UserRoleEnum role) {//토큰 생성
         Date date = new Date();
 
         return BEARER_PREFIX +
@@ -62,7 +62,7 @@ public class JwtUtil {
 
 
     // header 에서 JWT 가져오기
-    public String getJwtFromHeader(HttpServletRequest request) {
+    public String getJwtFromHeader(HttpServletRequest request) {//헤더에서 JWT 가져오기
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
@@ -71,7 +71,7 @@ public class JwtUtil {
     }
 
     // 토큰 검증
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token) {//토큰 검증
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
@@ -88,7 +88,7 @@ public class JwtUtil {
     }
 
     // 토큰에서 사용자 정보 가져오기
-    public Claims getUserInfoFromToken(String token) {
+    public Claims getUserInfoFromToken(String token) {//Claims는 토큰에서 정보를 추출하는 역할을 함
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 }

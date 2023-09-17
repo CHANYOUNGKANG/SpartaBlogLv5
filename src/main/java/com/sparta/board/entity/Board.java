@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity // JPA가 관리할 수 있는 Entity 클래스 지정
-@Getter
-@Setter
+@Getter//getter는 사용하지 않는 것이 좋음
+@Setter//setter는 사용하지 않는 것이 좋음
 @Table(name = "board") // 매핑할 테이블의 이름을 지정
 @NoArgsConstructor
 public class Board extends Timestamped {
@@ -38,13 +38,13 @@ public class Board extends Timestamped {
 
 
 
-    public Board(BoardRequestDto requestDto, User user) {
+    public Board(BoardRequestDto requestDto, User user) {//BoardRequestDto를 Board로 바꿔줌
         this.contents = requestDto.getContents();
         this.title = requestDto.getTitle();
         this.user = user;
     }
 
-    public void update(BoardRequestDto requestDto, User user) {
+    public void update(BoardRequestDto requestDto, User user) {//BoardRequestDto를 Board로 바꿔줌
         this.contents = requestDto.getContents();
         this.title = requestDto.getTitle();
         this.user = user;
