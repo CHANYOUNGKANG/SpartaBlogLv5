@@ -5,6 +5,8 @@ import com.sparta.board.dto.BoardRequestDto;
 import com.sparta.board.dto.BoardResponseDto;
 import com.sparta.board.security.UserDetailsImpl;
 import com.sparta.board.service.BoardService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -23,26 +25,33 @@ public class BoardController {
         this.boardService = boardService;
     }
 
+
+    @ApiResponse(description = "게시글 생성")
     @PostMapping("/boards")//생성
     public BoardResponseDto createBoard(@RequestBody BoardRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.createBoard(requestDto, userDetails.getUser());//userDetails.getUser() : 로그인한 사용자 정보
     }
+
+    @ApiResponse(description = "게시글 상세보기")
     @GetMapping("/boards/{id}")//상세보기
     public BoardResponseDto getBoard(@PathVariable Long id) {
         return boardService.getBoard(id);
     }
 
 
+    @ApiResponse(description = "게시글 전체보기")
     @GetMapping("/boards")//전체보기
     public List<BoardResponseDto> getBoards() {//전체보기
 
         return boardService.getBoards();//전체보기
     }
 
+    @ApiResponse(description = "게시글 검색")
     @GetMapping("/boards/contents")//전체보기
     public List<BoardResponseDto> getBoardsByKeyword(String keyword){//keyword : 검색어
         return boardService.getBoardsByKeyword(keyword);//검색어를 넘겨줌
     }
+
 
     @PutMapping("/boards/{id}")
     public ResponseEntity<String> updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto requestDto , @AuthenticationPrincipal UserDetailsImpl userDetails) {

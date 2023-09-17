@@ -20,6 +20,8 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+
+
     @PostMapping("/comments")
     public CommentResponseDto createComment(@RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.createComment(requestDto, userDetails.getUser());//userDetails.getUser() : 로그인한 사용자 정보
